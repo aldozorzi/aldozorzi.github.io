@@ -1,6 +1,6 @@
 ---
-title: "Ski Telemetry"
-description: "High-Performance Motion Analytics for Alpine Racing"
+title: "Ski Telemetry App"
+description: "From Chinese Sensors to Curve Analysis"
 date: 2026-04-12
 draft: false
 ---
