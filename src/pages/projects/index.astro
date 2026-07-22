@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const projects = (
+  await getCollection("projects", ({ data }) => data.draft !== true)
+).sort((a, b) => {
+  const aTime = a.data.date?.getTime() ?? 0;
+  const bTime = b.data.date?.getTime() ?? 0;
+  return bTime - aTime;
+});
+
+const getProjectSlug = (id: string) => id.replace(/\.md$/, "");
+---
+
+<Layout title="Projects">
+  <h1>Projects</h1>
+  {
+    projects.length === 0 ? (
+      <p>
+        Nessun progetto trovato.
+      </p>
+    ) : (
+      <ul class="not-prose list-none p-0 m-0 space-y-8">
+        {projects.map((project) => (
+          <li>
+            <a
+              class="not-prose font-sans block text-xl md:text-2xl font-semibold tracking-tight text-gray-900 no-underline hover:underline underline-offset-4"
+              href={`/projects/${getProjectSlug(project.id)}/`}
+            >
+              {project.data.title}
+            </a>
+            {project.data.description && (
+              <p class="mt-1 text-base md:text-lg font-normal text-gray-600">
+                {project.data.description}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</Layout>
