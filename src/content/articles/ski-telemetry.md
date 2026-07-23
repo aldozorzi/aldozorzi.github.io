@@ -7,9 +7,9 @@ draft: false
 
 # Building a Ski Telemetry App
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — From Chinese Sensors to Turn Analysis
-</div>
+</p>
 
 Over the past month and a half, I designed and developed a ski telemetry app. I’m sharing the story here in case anyone is interested in the process. Be warned: this is strictly for ski and software engineering nerds.
 

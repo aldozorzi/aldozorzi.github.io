@@ -7,22 +7,22 @@ draft: false
 
 # Understanding Dwarf Star
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Using AI to comprehend AI
-</div>
+</p>
 
 I have been a developer for more than 20 years, but I have never studied LLMs in depth, beyond that veil you encounter when you only have a few notions about what a neural network is and what a backpropagation algorithm is in abstract terms. 
 Nonetheless, I immediately understood that what Salvatore Sanfilippo was doing with his Dwarf Star deserved more attention than I was able to give, due to my technical limitations.
-So I decided to feed the Dwarf Star GitHub repository to DeepSeek v4 flash (the same model from which the entire project was born) and asked it to write a deep-dive analysis of what had been done, why, and how. The result is this summary which, while not particularly refined in its writing style, turns out to be quite clear, at least at a macroscopic level. After reading it, I thought it might be useful to others as well, who are curious to understand how a similar project can be approached, even without the technical skills to tackle it firsthand.
+So I decided to feed the Dwarf Star GitHub repository to DeepSeek v4 flash (the same model from which the entire project was born) and asked it to write a deep-pe analysis of what had been done, why, and how. The result is this summary which, while not particularly refined in its writing style, turns out to be quite clear, at least at a macroscopic level. After reading it, I thought it might be useful to others as well, who are curious to understand how a similar project can be approached, even without the technical skills to tackle it firsthand.
 It is possible, perhaps likely, that there are typos I haven't noticed: if that is the case and someone spots them, I will be grateful for any heads-up.
 
 ---
 
 # Introduction: The Dawn of Local Intelligence
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — The best way to predict the future is to build it — especially when the future can run on a laptop.
-</div>
+</p>
 
 The year is 2026. Large Language Models have become the steam engines of the information age — general-purpose reasoning engines that can code, write, reason, plan, and even surprise their creators. But there is a tension at the heart of this revolution: the most capable models live in remote data centers, accessible only through APIs, while the dream of a truly *personal* artificial intelligence — one that runs on your own machine, understands your context, respects your privacy, and never phones home — has remained tantalizingly out of reach.
 
@@ -157,7 +157,7 @@ What makes Dwarf Star special?
 
 - **Native KV cache**: The engine manages its own KV cache with compressed attention support, disk persistence, and session management. Agent sessions are stored on disk with their full KV state, allowing instant resumption without re-prefixing.
 
-- **Multi-modal parallelism**: Dwarf Star supports pipeline parallelism (splitting layers across machines), tensor parallelism (splitting individual layers across GPUs via RDMA), and batched multi-session serving — all in a single codebase.
+- **Multi-modal parallelism**: Dwarf Star supports pipeline parallelism (splitting layers across machines), tensor parallelism (splitting inpidual layers across GPUs via RDMA), and batched multi-session serving — all in a single codebase.
 
 - **SSD streaming**: For machines where the model does not fully fit in RAM, Dwarf Star can keep non-routed weights resident and stream routed experts from SSD on cache misses. The result is slower but still usable — a model that requires 128 GB can run on a 64 GB machine.
 
@@ -233,15 +233,15 @@ The future of intelligence is not just in the cloud. It is also on your desk, in
 
 ---
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
-  — Roadmap: From here, we dive into Chapter 1, where we explore the computer architecture that forms the stage where all of this computation takes place. The von Neumann bottleneck, the memory hierarchy, the GPU's parallel universe — these are not abstract concepts. They are the physical constraints that Dwarf Star dances around with every line of code.
-</div>
+<p class="not-prose text-gray-900 font-medium italic mb-8">
+  — Roadmap: From here, we pe into Chapter 1, where we explore the computer architecture that forms the stage where all of this computation takes place. The von Neumann bottleneck, the memory hierarchy, the GPU's parallel universe — these are not abstract concepts. They are the physical constraints that Dwarf Star dances around with every line of code.
+</p>
 
 # Chapter 1 — Computer Architecture: The Stage Where LLMs Perform
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — The computer is the theater where the mind of the machine performs.
-</div>
+</p>
 
 Before we can understand how Dwarf Star runs large language models efficiently, we must first understand the stage on which this performance takes place: the modern computer. Every time you ask an LLM a question, trillions of operations are executed across a complex hierarchy of components — CPUs, GPUs, RAM, caches, and storage — all working together in a carefully choreographed dance.
 
@@ -277,9 +277,9 @@ Think of it like a world-class chef (the CPU) who can chop vegetables in millise
 
 For LLM inference, this bottleneck is existential. A model like DeepSeek V4 Flash has billions of parameters (weights), and every single token generated requires reading most of those weights from memory. The speed at which we can move data from storage to processor determines how fast the model runs — often more than the raw computational speed of the processor itself.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   —  Dwarf Star insight: Dwarf Star's obsession with memory bandwidth over raw compute is a direct consequence of the von Neumann bottleneck. When running a 2-bit quantized model, the limiting factor is almost never how fast the GPU can multiply numbers — it's how fast it can read the model weights from RAM.
-</div>
+</p>
 
 ---
 
@@ -349,9 +349,9 @@ Data moves between memory and cache in fixed-size blocks called **cache lines**,
 
 This is why matrix multiplication (the core operation of neural networks) is optimized by ensuring that consecutive elements in memory are processed consecutively. Dwarf Star's quantization formats and kernel designs pay careful attention to memory layout — a poorly organized matrix would waste cache bandwidth loading 64-byte lines only to use a fraction of them.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: When Dwarf Star processes a layer of the neural network, it tries to keep the working set (weights for the current computation) in cache as much as possible. The quantization from 32-bit floats to 2-bit integers is not just about fitting the model in RAM — it also means 16× more weights fit in the same cache lines, reducing cache misses dramatically.
-</div>
+</p>
 
 ---
 
@@ -359,7 +359,7 @@ This is why matrix multiplication (the core operation of neural networks) is opt
 
 ### 1.3.1 Why CPUs Are Not Enough for LLMs
 
-A CPU is optimized for **latency** — executing a single stream of instructions as fast as possible. It has large caches, complex branch prediction, out-of-order execution, and all kinds of clever tricks to make individual threads run faster.
+A CPU is optimized for **latency** — executing a single stream of instructions as fast as possible. It has large caches, complex branch prediction, out-of-order execution, and all kinds of clever tricks to make inpidual threads run faster.
 
 A GPU (Graphics Processing Unit) is optimized for **throughput** — executing many simple operations in parallel. It has thousands of simple cores, small caches, and relies on massive parallelism to hide memory latency.
 
@@ -439,9 +439,9 @@ A 2-bit quantized model uses 1/16 the memory of the original FP32 version. This 
 
 But quantization is not free. Reducing precision introduces noise, and the art lies in minimizing the quality loss. DeepSeek V4 Flash, as used in Dwarf Star, is remarkably robust to quantization — the 2-bit versions retain most of the quality of the full-precision model.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: Dwarf Star uses a highly asymmetrical quantization strategy. The routed Mixture-of-Experts (MoE) layers — which constitute the bulk of the model — are quantized aggressively to 2-bit, while the shared expert layers, attention projections, and routing mechanism are kept at higher precision (Q8 or FP16). This is because the routing and attention mechanisms are more sensitive to precision loss. The author recognized that not all parts of the model are equally important, and allocated precision where it matters most.
-</div>
+</p>
 
 ### 1.3.6 How CPU and GPU Communicate: PCI Express
 
@@ -458,9 +458,9 @@ Sending data across PCIe is expensive — about 10× slower than reading from VR
 
 This is why running an LLM on a CPU (where the model must be in system RAM) is so much slower — the CPU's memory bandwidth is 10-20× lower than a GPU's VRAM bandwidth, and for every computation, the CPU must read weights from slow system RAM.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: Dwarf Star supports distributed inference across multiple machines. When splitting layers across machines, activations must be sent over the network. Dwarf Star includes an option to reduce activation precision to 16-bit or even 8-bit for transport, cutting network traffic in half or more. This is the PCIe problem at a larger scale.
-</div>
+</p>
 
 ---
 
@@ -514,9 +514,9 @@ Unified memory is not without compromises:
 
 Nevertheless, for running large models that would not fit in any consumer GPU's VRAM, unified memory is transformative.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: The README explicitly targets machines with "96 GB or more" RAM. This is not arbitrary — it's the threshold where a 2-bit quantized DeepSeek V4 Flash can fit alongside the operating system and KV cache. The author understood that the Apple Silicon unified memory architecture was uniquely suited for this use case.
-</div>
+</p>
 
 ---
 
@@ -577,9 +577,9 @@ The advantages of mmap:
 - **Shared across processes**: If multiple processes mmap the same file, they share the physical RAM pages
 - **Efficient for GPUs**: Metal can wrap an mmap region as a GPU buffer without copying
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: Dwarf Star uses mmap-based model loading as the default for Metal. The model file is mapped into memory, and Metal directly uses those mappings as GPU buffers. This means zero copying — the GPU reads weights from the OS page cache, which may or may not be backed by actual RAM depending on memory pressure. It's a beautiful example of letting the operating system do what it does best.
-</div>
+</p>
 
 ### 1.5.4 SSD Streaming: When the Model Doesn't Fit
 
@@ -619,9 +619,9 @@ The key insight: routed experts dominate the model size (they are the bulk of th
 
 Dwarf Star further optimizes this by **overlapping I/O with computation**: while the GPU processes the shared expert and the currently cached routed experts, the next needed expert is being loaded from SSD in the background. This hides the disk latency.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: The AGENT.md for the project explicitly states: "Always try to hide loading of missing routed experts by loading them while performing the inference of the shared expert and routed experts already in RAM." This is a textbook example of a systems programming technique called "prefetching" — anticipating future needs and satisfying them before they are requested.
-</div>
+</p>
 
 ---
 
@@ -674,9 +674,9 @@ For a long conversation with 100,000 tokens, the KV cache can be enormous:
 
 Dwarf Star uses a **compressed KV cache** with a ratio-4 indexer, meaning the KV cache is 4× smaller than the full uncompressed representation. This is essential for long-context inference on consumer hardware.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: The KV cache is stored in whatever memory is available after the model weights are loaded. The README mentions that "With 128GB of RAM you would run the 2-bit quants, which are already 81GB" — leaving 47 GB for KV cache, OS, and other applications. The trade-off between model precision, context length, and available memory is a constant theme in Dwarf Star's design.
-</div>
+</p>
 
 ---
 
@@ -752,13 +752,13 @@ In this chapter, we've built a mental model of the modern computer as it relates
 7. **mmap** and **SSD streaming** are techniques for running models larger than available RAM.
 8. Dwarf Star's design decisions are all direct responses to these hardware realities.
 
-In the next chapter, we'll dive deep into **Data Representation and Compression** — understanding how neural network weights are stored, what quantization actually does to the numbers, and how Dwarf Star's specific quantization choices enable running state-of-the-art models on consumer hardware.
+In the next chapter, we'll pe deep into **Data Representation and Compression** — understanding how neural network weights are stored, what quantization actually does to the numbers, and how Dwarf Star's specific quantization choices enable running state-of-the-art models on consumer hardware.
 
 # Chapter 2 — Data Representation and Compression
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Understanding a number is knowing what it is. Understanding quantization is knowing what it can afford to lose.
-</div>
+</p>
 
 In the previous chapter, we saw how the memory bottleneck dominates LLM inference. This chapter is about the most powerful technique Dwarf Star uses to overcome that bottleneck: **quantization** — the art of representing numbers with fewer bits while preserving the information that matters.
 
@@ -828,9 +828,9 @@ BF16     |  16  |    8     |    7     | ±3.4×10³⁸        | ~2 digits
 
 **FP16** (half precision) has reduced range compared to FP32, but is half the memory. **BF16** (Brain Floating Point, developed by Google) keeps the same exponent range as FP32 but reduces mantissa precision — ideal for neural networks where range matters more than exact precision.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: Dwarf Star uses FP16 for the KV cache attention tensors in some configurations, and FP32 for logits and sensitive computations. The choice is deliberate: attention values need more precision than model weights because small errors compound across the softmax operation.
-</div>
+</p>
 
 ---
 
@@ -1015,9 +1015,9 @@ The uniform levels of Q2_K waste precision in regions with few weights, while IQ
 
 Furthermore, IQ2_XXS requires an **importance matrix** (imatrix) — the per-weight importance scores collected during a calibration run. This is why `ds4q_requires_imatrix()` returns `true` for `IQ2_XXS` in `quants.c`.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight The README specifically recommends "imatrix versions" of the quantized models: `./download_model.sh q2-imatrix`. These models are quantized using importance-aware methods that preserve quality much better than naive quantization. The Dwarf Star project includes tools for collecting importance matrices from real inference runs (see `gguf-tools/imatrix/`).
-</div>
+</p>
 
 ---
 
@@ -1047,7 +1047,7 @@ The vast majority of the model's parameters are in the routed Mixture-of-Experts
 These experts tolerate extreme quantization (2 bits!) for several reasons:
 
 1. **Sparsity of activation**: Only 6 out of 256 experts are activated per token. The router selects the most relevant experts, and even quantized versions of those experts produce useful outputs.
-2. **Averaging effect**: The output is the weighted sum of 6 expert contributions. Errors in individual experts average out.
+2. **Averaging effect**: The output is the weighted sum of 6 expert contributions. Errors in inpidual experts average out.
 3. **Shared expert safety net**: Dwarf Star keeps one shared expert at Q8_0 (8-bit) that is always active. This provides a high-quality baseline that compensates for quantization errors in the routed experts.
 4. **Importance-aware quantization**: The IQ2_XXS method already described places precision where it matters most.
 
@@ -1100,9 +1100,9 @@ The weighted average across all components is approximately **2.28 bits per para
 
 This matches the actual file size of the `q2-imatrix` model reported in the Dwarf Star README. The result is a model that fits comfortably in 96–128 GB machines — a MacBook Pro M5 Max, a Mac Studio M3 Ultra, or a DGX Spark GB10.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: The asymmetry extends even within the expert itself: gate and up projections use the more aggressive IQ2_XXS (2.0625 bits), while down projections use Q2_K (2.625 bits). Gate and up matrices handle different information flows and exhibit different sensitivity to quantization. This per-matrix optimization is only possible because Dwarf Star is a narrow, model-specific engine — a general framework cannot make such fine-grained choices.
-</div>
+</p>
 
 ---
 
@@ -1205,9 +1205,9 @@ Stored in KV cache at reduced precision
 
 When attention is computed, the latent KV is projected back to the full dimension. The compression/decompression matrices are part of the model weights and are learned during training.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: Dwarf Star keeps the compressor and indexer tensors at FP16 precision, not quantized. This is because the compression/decompression operations are particularly sensitive to precision — errors here affect the entire attention computation. The small memory cost of FP16 for these tensors is far outweighed by the 4× reduction in KV cache size they enable.
-</div>
+</p>
 ---
 
 ## 2.6 The GGUF File Format
@@ -1282,7 +1282,7 @@ int ds4_engine_collect_imatrix(ds4_engine *e,
 
 The imatrix capture process:
 1. Load the model in FP16 or FP32
-2. Run on a diverse set of prompts (code, conversation, reasoning tasks)
+2. Run on a perse set of prompts (code, conversation, reasoning tasks)
 3. For each forward pass, record the squared gradients
 4. Average over all inputs
 5. Save the resulting importance values
@@ -1329,9 +1329,9 @@ The choice of 256 elements per block is deliberate:
 - **256 × 2 bits = 64 bytes**: Even IQ2_XXS blocks fit in shared memory
 - **256 is a power of 2**: Simplifies addressing and modulo arithmetic
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: In the CUDA backend code (ds4_cuda.cu), you'll find kernels named like `ds4_gpu_matmul_q8_0_pair_decode_rows_exact_tensor`. These highly specialized kernels handle specific combinations of quantization format and operation type. This specialization is only feasible because Dwarf Star supports a limited set of formats and model architectures.
-</div>
+</p>
 
 ---
 
@@ -1356,9 +1356,9 @@ Combined, these techniques reduce the model from over 1 TB (FP32) to about 81 GB
 But compression is not magic. The next chapter will show how Dwarf Star manages this compressed data at the systems level — allocating buffers, managing memory, and orchestrating the flow of data through the GPU's computational graph.
 # Chapter 3 — C Systems Programming
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — C is close to the language of the machine, speaking directly to the silicon.
-</div>
+</p>
 
 The previous two chapters gave us an understanding of the hardware stage and the data formats that perform on it. This chapter is about the **choreography** — how Dwarf Star orchestrates the movement and transformation of data at the systems level.
 
@@ -1446,7 +1446,7 @@ For the GPU path, scratch space is allocated as Metal or CUDA buffers and reused
 
 ### 3.2.3 Memory Pooling
 
-For larger working sets, Dwarf Star uses **memory pools** — pre-allocated regions of memory that are subdivided for specific purposes. The KV cache is one such pool:
+For larger working sets, Dwarf Star uses **memory pools** — pre-allocated regions of memory that are subpided for specific purposes. The KV cache is one such pool:
 
 ```markdown
 // Conceptual illustration
@@ -1543,7 +1543,7 @@ Dwarf Star mitigates these through careful coding conventions and extensive inte
 
 ### 3.4.1 How mmap Works
 
-We touched on mmap in Chapter 1. Let's dive deeper into the implementation.
+We touched on mmap in Chapter 1. Let's pe deeper into the implementation.
 
 `mmap` is a POSIX system call that maps a file (or device) into the process's virtual address space:
 
@@ -1610,7 +1610,7 @@ The `close()` after mmap is safe — the kernel keeps the file's data pages aliv
 
 ### 3.5.1 What Is the Metal Graph?
 
-Dwarf Star doesn't execute individual GPU kernels one at a time. Instead, it builds a **Metal performance-driven graph** — a pre-compiled sequence of GPU operations that represents the entire inference pass for one layer.
+Dwarf Star doesn't execute inpidual GPU kernels one at a time. Instead, it builds a **Metal performance-driven graph** — a pre-compiled sequence of GPU operations that represents the entire inference pass for one layer.
 
 The graph includes:
 - Loading weights from the mmap region
@@ -1622,7 +1622,7 @@ The graph includes:
 
 ### 3.5.2 Why a Graph?
 
-Executing a GPU kernel incurs overhead — the CPU must prepare command buffers, submit them, and synchronize. For a single kernel, this overhead is small. But a transformer has dozens of layers, each with dozens of operations. Submitting them individually would waste precious milliseconds.
+Executing a GPU kernel incurs overhead — the CPU must prepare command buffers, submit them, and synchronize. For a single kernel, this overhead is small. But a transformer has dozens of layers, each with dozens of operations. Submitting them inpidually would waste precious milliseconds.
 
 By encoding all operations for one layer into a single Metal graph, Dwarf Star amortizes the submission overhead across many operations. The GPU also benefits from knowing the full sequence — it can schedule memory loads earlier, keep data in on-chip caches across operations, and pipeline execution.
 
@@ -1892,9 +1892,9 @@ Each of these techniques is a tool in the systems programmer's belt. Dwarf Star 
 In the next chapter, we'll look at how distributed inference works — connecting multiple machines to pool their memory and compute power.
 # Chapter 4 — Low-Latency Networking
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Distance in computing is measured in microseconds. A cable is a memory bus between machines.
-</div>
+</p>
 
 So far, we've assumed that all computation happens on a single machine. But what if the model is too large for even the most powerful computer? What if you want to combine two Mac Studios to run a model that needs 512 GB of RAM?
 
@@ -1949,9 +1949,9 @@ So distributed generation is **always slower** than single-machine generation:
 
 The extra network round trip adds latency. Dwarf Star measures a 19.4% loss for Thunderbolt connections and much larger losses for WiFi.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: The README is admirably honest: "Distributed inference is therefore mainly for fitting larger models and speeding up long prefills, not for making decode faster."
-</div>
+</p>
 
 ---
 
@@ -2100,7 +2100,7 @@ typedef struct {
 } ds4_dist_work_fixed;
 ```
 
-The **rolling hash** (prefix_hash, result_hash) is a crucial safety feature. It verifies that the worker's KV cache is in sync with the coordinator's. If a worker has been restarted or its cache has diverged, the hash will mismatch, and the coordinator can detect the inconsistency and replay the token history.
+The **rolling hash** (prefix_hash, result_hash) is a crucial safety feature. It verifies that the worker's KV cache is in sync with the coordinator's. If a worker has been restarted or its cache has perged, the hash will mismatch, and the coordinator can detect the inconsistency and replay the token history.
 
 ### 4.3.4 The RESULT Frame
 
@@ -2441,9 +2441,9 @@ The key trade-offs are:
 
 The network chapter completes our journey from the single transistor to the distributed cluster. In the final chapter, we'll bring everything together by examining the transformer architecture itself — the mathematical structure that makes modern LLMs possible, and how Dwarf Star implements it.# Chapter 5 — Transformer Architecture: The Mind of the Machine
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — A transformer is not a single thought — it's a conversation between every word and every other word, repeated until meaning emerges.
-</div>
+</p>
 
 We've arrived at the heart of the matter. For four chapters, we've built up the foundation: the computer architecture that runs the model, the quantization that compresses it, the systems programming that orchestrates it, and the networking that connects multiple machines. Now we finally zoom in on the transformer itself — the neural network architecture that powers modern LLMs.
 
@@ -2552,7 +2552,7 @@ For each query token `i` and key token `j` in the sequence, compute the attentio
 score(i, j) = Q_i · K_j / sqrt(d_head)
 ```
 
-This is a dot product — a measure of similarity between the query and key. The division by `sqrt(d_head)` prevents the dot products from growing too large (which would push the softmax into extreme values).
+This is a dot product — a measure of similarity between the query and key. The pision by `sqrt(d_head)` prevents the dot products from growing too large (which would push the softmax into extreme values).
 
 **Step 3: Attention Weights**
 
@@ -2605,9 +2605,9 @@ The key insight: the latent representation `C` is much smaller than the full K a
 
 This is the "compressed KV cache" we discussed in Chapter 2. The `ds4_engine_layer_compress_ratio()` function returns 4 for MLA, meaning the KV cache is 4× smaller than it would be with standard attention.
 
-<div class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="not-prose text-gray-900 font-medium italic mb-8">
   — Dwarf Star insight: The compressor and indexer tensors in MLA are kept at FP16 precision. They are small (on the order of a few MB per layer) compared to the main weight matrices, and their precision is critical for correct attention computation. Dwarf Star's decision to keep them at FP16 is a deliberate quality-preserving choice.
-</div>
+</p>
 
 ### 5.2.4 The Feed-Forward Network (FFN)
 
@@ -2780,7 +2780,7 @@ The KV cache has a well-defined lifecycle in Dwarf Star:
 
 1. **Creation**: Allocated when the session is created, sized for the requested context
 2. **Append**: Each new token's K and V are appended during generation
-3. **Sync**: When the user provides a new prompt, the cache is synced — if the prompt is a continuation, only the new tokens are processed; if it diverges, the cache is rewound and rebuilt
+3. **Sync**: When the user provides a new prompt, the cache is synced — if the prompt is a continuation, only the new tokens are processed; if it perges, the cache is rewound and rebuilt
 4. **Save**: The entire cache can be serialized to disk (for session persistence)
 5. **Load**: A previously saved cache can be loaded, avoiding reprocessing of the prefix
 6. **Free**: Released when the session is destroyed
@@ -3017,7 +3017,7 @@ With MLA, the KV cache is compressed by 4×. This is not just a memory optimizat
 
 Not all models tolerate 2-bit quantization well. DeepSeek V4 Flash was apparently trained in a way that makes its weights robust to aggressive quantization. The exact reasons are an active area of research, but plausible factors include:
 
-- **MoE sparsity**: Each expert sees diverse training signals, making individual weights less critical
+- **MoE sparsity**: Each expert sees perse training signals, making inpidual weights less critical
 - **Large model size**: With 671B total parameters, redundancy is abundant
 - **Training dynamics**: The training process may naturally produce weights that cluster into quantizable levels
 
