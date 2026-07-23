@@ -1,11 +1,13 @@
 ---
 title: "Ski Telemetry App"
-description: "From Chinese Sensors to Curve Analysis"
+description: "From Chinese Sensors to Turn Analysis"
 date: 2026-04-12
 draft: false
 ---
 
-# Building a Ski Telemetry App: From Chinese Sensors to Curve Analysis
+# Building a Ski Telemetry App
+
+> *From Chinese Sensors to Turn Analysis*
 
 Over the past month and a half, I designed and developed a ski telemetry app. I’m sharing the story here in case anyone is interested in the process. Be warned: this is strictly for ski and software engineering nerds.
 
