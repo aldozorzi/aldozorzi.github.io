@@ -7,6 +7,12 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://ldazrz.com',
   base: '',
+  redirects: {
+    '/projects': '/articles',
+    '/projects/': '/articles/',
+    '/projects/understanding-dwarf-star/': '/articles/understanding-dwarf-star/',
+    '/projects/ski-telemetry/': '/articles/ski-telemetry/',
+  },
   vite: {
     plugins: [tailwindcss()]
   }
