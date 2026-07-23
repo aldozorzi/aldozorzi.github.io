@@ -9,9 +9,8 @@ export default defineConfig({
   base: '',
   redirects: {
     '/projects': '/articles',
-    '/projects/': '/articles/',
-    '/projects/understanding-dwarf-star/': '/articles/understanding-dwarf-star/',
-    '/projects/ski-telemetry/': '/articles/ski-telemetry/',
+    '/projects/understanding-dwarf-star': '/articles/understanding-dwarf-star',
+    '/projects/ski-telemetry': '/articles/ski-telemetry',
   },
   vite: {
     plugins: [tailwindcss()]
