@@ -1,11 +1,11 @@
 ---
-title: "Ski Telemetry App"
-description: "From Chinese Sensors to Turn Analysis"
+title: "Skinetik"
+description: "Ski Telemetry App"
 date: 2026-04-12
 draft: false
 ---
 
-# Building a Ski Telemetry App
+# Skinetik - a Ski Telemetry App
 
 <p class="not-prose text-gray-900 font-medium italic mb-8">
   — From Chinese Sensors to Turn Analysis
