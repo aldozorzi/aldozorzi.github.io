@@ -16,6 +16,14 @@ export const themes = {
     brightForeground: "#4c4f69",
     accent: "#305399",
   },
+  "coffee": {
+    mode: "dark",
+    background: "#201200",
+    muted: "#af9a47",
+    foreground: "#ece0b2",
+    brightForeground: "#f5efda",
+    accent: "#ee9b00",
+  },
   ethereal: {
     mode: "dark",
     background: "#060B1E",
