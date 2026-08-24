@@ -151,7 +151,7 @@
         picker.querySelector("[data-theme-panel]").classList.remove("scale-95", "opacity-0");
       });
       buildList();
-      if (selectedIndex >= 0) setHighlighted(selectedIndex);
+      if (selectedIndex >= 0) selectItem(selectedIndex);
       document.addEventListener("keydown", handleKey);
     }
 
@@ -210,7 +210,7 @@
         });
         
         li.addEventListener("mouseenter", function() {
-          setHighlighted(i);
+          highlightItem(i);
         });
         
         list.appendChild(li);
@@ -218,7 +218,7 @@
       });
     }
 
-    function setHighlighted(index) {
+    function highlightItem(index) {
       if (selectedIndex >= 0 && items[selectedIndex]) {
         items[selectedIndex].classList.remove("bg-foreground/10", "text-bright-foreground");
       }
@@ -226,7 +226,14 @@
       if (items[selectedIndex]) {
         items[selectedIndex].classList.add("bg-foreground/10", "text-bright-foreground");
         items[selectedIndex].scrollIntoView({ block: "nearest" });
+      }
+    }
+
+    function selectItem(index) {
+      highlightItem(index);
+      if (items[selectedIndex]) {
         var name = items[selectedIndex].getAttribute("data-theme-item");
+        window._themeData.applyTheme(name);
       }
     }
 
@@ -242,7 +249,7 @@
       if (e.key === "ArrowDown") {
         e.preventDefault();
         if (selectedIndex < items.length - 1) {
-          setHighlighted(selectedIndex + 1);
+          selectItem(selectedIndex + 1);
         }
         return;
       }
@@ -250,7 +257,7 @@
       if (e.key === "ArrowUp") {
         e.preventDefault();
         if (selectedIndex > 0) {
-          setHighlighted(selectedIndex - 1);
+          selectItem(selectedIndex - 1);
         }
         return;
       }
