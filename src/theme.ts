@@ -134,7 +134,7 @@ export const themes = {
     muted: "#2a6b78",
     foreground: "#f6dcac",
     brightForeground: "#f6dcac",
-    accent: "#faa968",
+    accent: "#f77e1b",
   },
   ristretto: {
     mode: "dark",
