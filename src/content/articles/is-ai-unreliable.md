@@ -7,7 +7,7 @@ draft: false
 
 # Is AI unreliable?
 
-<p class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="text-muted font-medium italic mb-8">
   — Is "human" always better?
 </p>
 

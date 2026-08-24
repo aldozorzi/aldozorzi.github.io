@@ -22,13 +22,58 @@ const { title = "Project" } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap"
       rel="stylesheet"
     />
+
+    <script is:inline>
+      (function() {
+        var themes = {
+          catppuccin: { mode: "dark", background: "#1e1e2e", muted: "#585b70", foreground: "#cdd6f4", brightForeground: "#bac2de", accent: "#89b4fa" },
+          gruvbox: { mode: "dark", background: "#282828", muted: "#665c54", foreground: "#d4be98", brightForeground: "#bdae93", accent: "#7daea3" },
+          nord: { mode: "dark", background: "#2e3440", muted: "#4c566a", foreground: "#d8dee9", brightForeground: "#adb5c4", accent: "#81a1c1" },
+          "catppuccin-latte": { mode: "light", background: "#eff1f5", muted: "#acb0be", foreground: "#4c4f69", brightForeground: "#5c5f77", accent: "#1e66f5" },
+          "flexoki-light": { mode: "light", background: "#FFFCF0", muted: "#B7B5AC", foreground: "#100F0F", brightForeground: "#403E3C", accent: "#205EA6" }
+        };
+        var STORAGE_KEY = "ldazrz-theme";
+        var EXPIRY_HOURS = 12;
+
+        function getStoredTheme() {
+          try {
+            var stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return null;
+            var parsed = JSON.parse(stored);
+            if (Date.now() - parsed.timestamp > EXPIRY_HOURS * 3600000) {
+              localStorage.removeItem(STORAGE_KEY);
+              return null;
+            }
+            return parsed.name;
+          } catch (e) { return null; }
+        }
+
+        function getRandomTheme() {
+          var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          var filtered = Object.keys(themes).filter(function(k) { return themes[k].mode === (prefersDark ? "dark" : "light"); });
+          return filtered[Math.floor(Math.random() * filtered.length)];
+        }
+
+        var stored = getStoredTheme();
+        var name = stored || getRandomTheme();
+        if (!stored) localStorage.setItem(STORAGE_KEY, JSON.stringify({ name: name, timestamp: Date.now() }));
+
+        var t = themes[name];
+        var r = document.documentElement;
+        r.style.setProperty("--theme-background", t.background);
+        r.style.setProperty("--theme-muted", t.muted);
+        r.style.setProperty("--theme-foreground", t.foreground);
+        r.style.setProperty("--theme-bright-foreground", t.brightForeground);
+        r.style.setProperty("--theme-accent", t.accent);
+      })();
+    </script>
   </head>
 
-  <body class="bg-gray-100">
+  <body class="bg-background">
     <section class="min-h-screen py-10 md:py-16 flex flex-col items-center justify-center-safe">
       <div class="container max-w-3xl mx-auto px-4">
         <nav class="text-center mb-10">
-          <h6 class="font-medium text-gray-600 text-lg md:text-2xl uppercase tracking-tight">
+          <h6 class="font-medium text-muted text-lg md:text-2xl uppercase tracking-tight">
             <a class="text-inherit no-underline hover:text-inherit" href="/">
               LDA ZRZ
             </a>
@@ -39,7 +84,7 @@ const { title = "Project" } = Astro.props;
           </h6>
         </nav>
         <article
-          class="prose prose-gray prose-lg max-w-none prose-h1:font-normal prose-h1:font-normal prose-h1:text-3xl md:prose-h1:text-4xl prose-h2:font-normal prose-h3:font-normal prose-h4:font-normal prose-h5:font-normal prose-h6:font-normal prose-h2:mt-8 prose-h2:mb-3 prose-ul:list-disc prose-ul:pl-6 prose-li:marker:text-gray-700"
+          class="prose prose-lg max-w-none prose-h1:font-normal prose-h1:text-3xl md:prose-h1:text-4xl prose-h2:font-normal prose-h3:font-normal prose-h4:font-normal prose-h5:font-normal prose-h6:font-normal prose-h2:mt-8 prose-h2:mb-3 prose-ul:list-disc prose-ul:pl-6"
         >
           <slot />
         </article>

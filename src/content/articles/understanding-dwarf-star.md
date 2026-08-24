@@ -7,7 +7,7 @@ draft: false
 
 # Understanding Dwarf Star
 
-<p class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="text-accent font-medium italic mb-8">
   — Using AI to comprehend AI
 </p>
 

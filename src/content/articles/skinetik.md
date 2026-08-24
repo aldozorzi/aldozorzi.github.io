@@ -7,7 +7,7 @@ draft: false
 
 # Skinetik - a Ski Telemetry App
 
-<p class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="text-accent font-medium italic mb-8">
   — From Chinese Sensors to Turn Analysis
 </p>
 

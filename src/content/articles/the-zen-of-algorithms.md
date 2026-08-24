@@ -7,7 +7,7 @@ draft: false
 
 # The Zen of Algorithms
 
-<p class="not-prose text-gray-900 font-medium italic mb-8">
+<p class="text-accent font-medium italic mb-8">
   — Stories of Programming and Old PCs
 </p>
 

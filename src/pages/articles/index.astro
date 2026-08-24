@@ -25,13 +25,13 @@ const getArticleSlug = (id: string) => id.replace(/\.md$/, "");
         {articles.map((article) => (
           <li>
             <a
-              class="not-prose font-sans block text-xl md:text-2xl font-semibold tracking-tight text-gray-900 no-underline hover:underline underline-offset-4"
+              class="text-accent font-sans block text-xl md:text-2xl font-semibold tracking-tight no-underline hover:underline underline-offset-4"
               href={`/articles/${getArticleSlug(article.id)}/`}
             >
               {article.data.title}
             </a>
             {article.data.description && (
-              <p class="mt-1 text-base md:text-lg font-normal text-gray-600">
+              <p class="mt-1 text-base md:text-lg font-normal text-muted">
                 {article.data.description}
               </p>
             )}
