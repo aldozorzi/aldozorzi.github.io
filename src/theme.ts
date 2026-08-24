@@ -1,28 +1,28 @@
 // Theme definitions — only colors actually used in the site
-const themes = {
+export const themes = {
   catppuccin: {
     mode: "dark",
     background: "#1e1e2e",
     muted: "#585b70",
     foreground: "#cdd6f4",
     brightForeground: "#cdd6f4",
-    accent: "#89b4fa",
+    accent: "#87a7da",
   },
   "catppuccin-latte": {
     mode: "light",
-    background: "#eff1f5",
+    background: "#f3f5ef",
     muted: "#acb0be",
     foreground: "#4c4f69",
     brightForeground: "#4c4f69",
-    accent: "#1e66f5",
+    accent: "#305399",
   },
   ethereal: {
     mode: "dark",
     background: "#060B1E",
-    muted: "#6d7db6",
+    muted: "#5f4a80",
     foreground: "#ffcead",
     brightForeground: "#ffcead",
-    accent: "#7d82d9",
+    accent: "#a07dd9",
   },
   everforest: {
     mode: "dark",
@@ -51,7 +51,7 @@ const themes = {
   hackerman: {
     mode: "dark",
     background: "#0B0C16",
-    muted: "#2d3450",
+    muted: "#4c5888",
     foreground: "#ddf7ff",
     brightForeground: "#ddf7ff",
     accent: "#82FB9C",
@@ -86,7 +86,7 @@ const themes = {
     muted: "#9e9e9e",
     foreground: "#212121",
     brightForeground: "#000000",
-    accent: "#3264eb",
+    accent: "#607ed3",
   },
   "matte-black": {
     mode: "dark",
@@ -158,7 +158,7 @@ const themes = {
     muted: "#414868",
     foreground: "#a9b1d6",
     brightForeground: "#c0caf5",
-    accent: "#7aa2f7",
+    accent: "#ea00ff",
   },
   vantablack: {
     mode: "dark",
