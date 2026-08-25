@@ -1,0 +1,52 @@
+---
+---
+
+<button
+  id="theme-toggle"
+  class="fixed top-4 right-4 z-40 p-2 text-foreground hover:text-bright-foreground transition-colors"
+  aria-label="Toggle dark/light theme"
+>
+  <svg id="theme-toggle-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+  </svg>
+  <svg id="theme-toggle-moon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+  </svg>
+</button>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function() {
+    var btn = document.getElementById("theme-toggle");
+    var sunIcon = document.getElementById("theme-toggle-sun");
+    var moonIcon = document.getElementById("theme-toggle-moon");
+    var DARK_DEFAULT = "coffee";
+    var LIGHT_DEFAULT = "flexoki-light";
+
+    function updateIcon() {
+      var data = window._themeData;
+      if (!data) return;
+      var mode = data.themes[data.currentTheme].mode;
+      if (mode === "dark") {
+        sunIcon.classList.remove("hidden");
+        moonIcon.classList.add("hidden");
+      } else {
+        moonIcon.classList.remove("hidden");
+        sunIcon.classList.add("hidden");
+      }
+    }
+
+    btn.addEventListener("click", function() {
+      var data = window._themeData;
+      if (!data) return;
+      var mode = data.themes[data.currentTheme].mode;
+      if (mode === "dark") {
+        data.applyTheme(LIGHT_DEFAULT);
+      } else {
+        data.applyTheme(DARK_DEFAULT);
+      }
+      updateIcon();
+    });
+
+    updateIcon();
+  });
+</script>

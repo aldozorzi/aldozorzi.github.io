@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import ThemePicker from "../components/ThemePicker.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 
 interface Props {
   title?: string;
@@ -31,6 +32,7 @@ const { title = "LDAZRZ", showArticlesLink = false } = Astro.props;
   </head>
 
   <body class="bg-background">
+    <ThemeToggle />
     <section
       class="min-h-screen py-10 md:py-16 flex flex-col items-center justify-center-safe"
     >
