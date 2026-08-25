@@ -26,6 +26,24 @@
   }
 }
 
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-muted) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--theme-muted);
+  border-radius: 3px;
+}
+
 .prose {
   --tw-prose-body: var(--color-foreground);
   --tw-prose-headings: var(--color-accent);
