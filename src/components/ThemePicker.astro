@@ -31,6 +31,12 @@ import { themes } from "../theme";
       return filtered[Math.floor(Math.random() * filtered.length)];
     }
 
+    function getDefaultTheme() {
+      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (prefersDark) return 'coffee';
+      return 'flexoki-light';
+    }
+
     function applyTheme(name) {
       currentTheme = name;
       var t = themes[name];
@@ -54,7 +60,7 @@ import { themes } from "../theme";
     }
 
     var stored = getStoredTheme();
-    currentTheme = stored || getRandomTheme();
+    currentTheme = stored || getDefaultTheme();
     if (!stored) storeTheme(currentTheme);
 
     var t = themes[currentTheme];

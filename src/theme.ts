@@ -46,7 +46,7 @@ export const themes = {
     muted: "#B7B5AC",
     foreground: "#100F0F",
     brightForeground: "#100F0F",
-    accent: "#205EA6",
+    accent: "#20a67e",
   },
   gruvbox: {
     mode: "dark",
