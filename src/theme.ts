@@ -62,7 +62,7 @@ export const themes = {
     muted: "#4c5888",
     foreground: "#ddf7ff",
     brightForeground: "#ddf7ff",
-    accent: "#82FB9C",
+    accent: "#4dd86b",
   },
   kanagawa: {
     mode: "dark",
@@ -186,66 +186,5 @@ export const themes = {
   },
 };
 
-type ThemeName = keyof typeof themes;
-type Theme = (typeof themes)[ThemeName];
-
-const STORAGE_KEY = "ldazrz-theme";
-const EXPIRY_HOURS = 12;
-
-interface StoredTheme {
-  name: ThemeName;
-  timestamp: number;
-}
-
-function getStoredTheme(): ThemeName | null {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored) return null;
-
-    const parsed: StoredTheme = JSON.parse(stored);
-    const elapsed = Date.now() - parsed.timestamp;
-    const maxAge = EXPIRY_HOURS * 60 * 60 * 1000;
-
-    if (elapsed > maxAge) {
-      localStorage.removeItem(STORAGE_KEY);
-      return null;
-    }
-
-    return parsed.name;
-  } catch {
-    return null;
-  }
-}
-
-function storeTheme(name: ThemeName): void {
-  const data: StoredTheme = { name, timestamp: Date.now() };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function getRandomTheme(): ThemeName {
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const filtered = (Object.keys(themes) as ThemeName[]).filter(
-    (k) => themes[k].mode === (prefersDark ? "dark" : "light")
-  );
-  return filtered[Math.floor(Math.random() * filtered.length)];
-}
-
-function applyTheme(theme: Theme): void {
-  const root = document.documentElement;
-  root.style.setProperty("--theme-background", theme.background);
-  root.style.setProperty("--theme-muted", theme.muted);
-  root.style.setProperty("--theme-foreground", theme.foreground);
-  root.style.setProperty("--theme-bright-foreground", theme.brightForeground);
-  root.style.setProperty("--theme-accent", theme.accent);
-}
-
-export function initTheme(): void {
-  const stored = getStoredTheme();
-  const name = stored || getRandomTheme();
-
-  if (!stored) {
-    storeTheme(name);
-  }
-
-  applyTheme(themes[name]);
-}
+export type ThemeName = keyof typeof themes;
+export type Theme = (typeof themes)[ThemeName];
