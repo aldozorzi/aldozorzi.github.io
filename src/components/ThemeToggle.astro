@@ -32,34 +32,65 @@
     var moonIcon = document.getElementById("theme-toggle-moon");
     var DARK_DEFAULT = "coffee";
     var LIGHT_DEFAULT = "flexoki-light";
+    var STORAGE_KEY = "ldazrz-theme";
+    var currentDark = DARK_DEFAULT;
+    var currentLight = LIGHT_DEFAULT;
 
-    pickerBtn.addEventListener("click", function() {
-      window._themePicker.open();
-    });
+    try {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        var parsed = JSON.parse(stored);
+        if (parsed.darkTheme) currentDark = parsed.darkTheme;
+        if (parsed.lightTheme) currentLight = parsed.lightTheme;
+      }
+    } catch (e) {}
+
+    var data = window._themeData;
+    if (data) {
+      var mode = data.themes[data.currentTheme].mode;
+      if (mode === "dark") {
+        currentDark = data.currentTheme;
+      } else {
+        currentLight = data.currentTheme;
+      }
+    }
 
     function updateIcon() {
       var data = window._themeData;
       if (!data) return;
       var mode = data.themes[data.currentTheme].mode;
       if (mode === "dark") {
+        currentDark = data.currentTheme;
         sunIcon.classList.remove("hidden");
         moonIcon.classList.add("hidden");
       } else {
+        currentLight = data.currentTheme;
         moonIcon.classList.remove("hidden");
         sunIcon.classList.add("hidden");
       }
     }
+
+    if (data) {
+      var originalApply = data.applyTheme;
+      data.applyTheme = function(name) {
+        originalApply(name);
+        updateIcon();
+      };
+    }
+
+    pickerBtn.addEventListener("click", function() {
+      window._themePicker.open();
+    });
 
     btn.addEventListener("click", function() {
       var data = window._themeData;
       if (!data) return;
       var mode = data.themes[data.currentTheme].mode;
       if (mode === "dark") {
-        data.applyTheme(LIGHT_DEFAULT);
+        data.applyTheme(currentLight);
       } else {
-        data.applyTheme(DARK_DEFAULT);
+        data.applyTheme(currentDark);
       }
-      updateIcon();
     });
 
     updateIcon();

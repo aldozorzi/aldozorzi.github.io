@@ -5,36 +5,37 @@ import { themes } from "../theme";
 <script is:inline define:vars={{ themes }}>
   (function() {
     var STORAGE_KEY = "ldazrz-theme";
-    var EXPIRY_HOURS = 12;
+    var DARK_DEFAULT = "coffee";
+    var LIGHT_DEFAULT = "flexoki-light";
     var currentTheme = null;
 
-    function getStoredTheme() {
+    function getStoredPrefs() {
       try {
         var stored = localStorage.getItem(STORAGE_KEY);
         if (!stored) return null;
         var parsed = JSON.parse(stored);
-        if (Date.now() - parsed.timestamp > EXPIRY_HOURS * 3600000) {
-          localStorage.removeItem(STORAGE_KEY);
-          return null;
+        if (parsed.darkTheme && parsed.lightTheme) return parsed;
+        if (parsed.name && parsed.timestamp) {
+          var mode = themes[parsed.name] ? themes[parsed.name].mode : null;
+          if (mode === "dark") return { darkTheme: parsed.name, lightTheme: LIGHT_DEFAULT };
+          if (mode === "light") return { darkTheme: DARK_DEFAULT, lightTheme: parsed.name };
         }
-        return parsed.name;
+        return null;
       } catch (e) { return null; }
     }
 
-    function storeTheme(name) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ name: name, timestamp: Date.now() }));
-    }
-
-    function getRandomTheme() {
-      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      var filtered = Object.keys(themes).filter(function(k) { return themes[k].mode === (prefersDark ? "dark" : "light"); });
-      return filtered[Math.floor(Math.random() * filtered.length)];
+    function storePrefs() {
+      var mode = themes[currentTheme] ? themes[currentTheme].mode : null;
+      var stored = getStoredPrefs() || { darkTheme: DARK_DEFAULT, lightTheme: LIGHT_DEFAULT };
+      if (mode === "dark") stored.darkTheme = currentTheme;
+      else if (mode === "light") stored.lightTheme = currentTheme;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
     }
 
     function getDefaultTheme() {
       var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (prefersDark) return 'coffee';
-      return 'flexoki-light';
+      if (prefersDark) return DARK_DEFAULT;
+      return LIGHT_DEFAULT;
     }
 
     function applyTheme(name) {
@@ -46,7 +47,7 @@ import { themes } from "../theme";
       r.style.setProperty("--theme-foreground", t.foreground);
       r.style.setProperty("--theme-bright-foreground", t.brightForeground);
       r.style.setProperty("--theme-accent", t.accent);
-      storeTheme(name);
+      storePrefs();
       updatePickerHighlight(name);
     }
 
@@ -59,9 +60,14 @@ import { themes } from "../theme";
       });
     }
 
-    var stored = getStoredTheme();
-    currentTheme = stored || getDefaultTheme();
-    if (!stored) storeTheme(currentTheme);
+    var stored = getStoredPrefs();
+    if (stored) {
+      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      currentTheme = prefersDark ? stored.darkTheme : stored.lightTheme;
+    } else {
+      currentTheme = getDefaultTheme();
+    }
+    storePrefs();
 
     var t = themes[currentTheme];
     var r = document.documentElement;
