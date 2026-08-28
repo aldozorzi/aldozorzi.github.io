@@ -14,7 +14,7 @@ draft: false
 Marketing sucks. And marketing targeting algorithms suck more.
 
 Every day I am flooded with posts, videos, ads that try to teach me about AI. Any idiot with a keyboard or a phone tries to get rich teaching AI prompting or secret methods to get AI work for you. They write a dumb system prompt and feel like they uncovered the holy grail of marketing, so they think they can charge you for that or get your money to teach you the secret of System Prompt.
-There is no secret: the System Prompt is there, everyone can use it.
+There is no secret: the system prompt is there, everyone can use it.
 
 Then there are those selling agents. They use lyrical metaphors like "Agent Army", vivid images like "they work instead of you while you sleep", and present agents as the real response to those problems that you can't solve with a simple prompt.
 The real problem is that you shouldn't use simple prompts at all, but you don't need to pay someone to create agents or to teach you how to create them.
