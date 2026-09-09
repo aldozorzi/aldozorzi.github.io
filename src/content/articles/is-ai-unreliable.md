@@ -1,6 +1,7 @@
 ---
 title: "Is AI unreliable?"
-description: "Is \"human\" always better?"
+subtitle: "Is \"human\" always better?"
+description: "AI isn't uniquely unreliable: humans have been 'hallucinating' for decades by pretending to know what they don't. The real measure of any content is whether it deserves to be published."
 date: 2026-08-24
 draft: false
 ---

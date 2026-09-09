@@ -1,6 +1,7 @@
 ---
 title: "Understanding Dwarf Star"
-description: "Using AI to comprehend AI"
+subtitle: "Using AI to comprehend AI"
+description: "A deep analysis of Dwarf Star, the specialized inference engine by Redis creator antirez, and how it runs semi-frontier open-weight LLMs on hardware you actually own."
 date: 2026-07-22
 draft: false
 ---

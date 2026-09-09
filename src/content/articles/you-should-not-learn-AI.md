@@ -1,6 +1,7 @@
 ---
 title: "You should not learn AI"
-description: "but something more useful"
+subtitle: "but something more useful"
+description: "Forget prompt templates and magic agents. Building with AI is easy; knowing what to ask is not. True success comes from deep domain knowledge you can't outsource."
 date: 2026-08-28
 draft: false
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Skinetik"
-description: "Ski Telemetry App"
+subtitle: "Ski Telemetry App"
+description: "A ski and software nerd's journey building a telemetry app with ESP32 sensors and BLE to objectively measure the mechanics of a ski turn."
 date: 2026-04-12
 draft: false
 ---

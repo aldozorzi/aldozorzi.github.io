@@ -13,7 +13,10 @@ const articles = (
 const getArticleSlug = (id: string) => id.replace(/\.md$/, "");
 ---
 
-<Layout title="Articles">
+<Layout 
+  title="Articles"
+  description="Simply what I think. More healthy than writing on social networks."  
+>
   <h1>Articles</h1>
   {
     articles.length === 0 ? (
@@ -30,9 +33,9 @@ const getArticleSlug = (id: string) => id.replace(/\.md$/, "");
             >
               {article.data.title}
             </a>
-            {article.data.description && (
+            {article.data.subtitle && (
               <p class="mt-1 text-base md:text-lg font-normal text-muted">
-                {article.data.description}
+                {article.data.subtitle}
               </p>
             )}
           </li>

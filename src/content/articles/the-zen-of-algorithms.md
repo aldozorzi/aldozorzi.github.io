@@ -1,6 +1,7 @@
 ---
 title: "The Zen of Algorithms"
-description: "Stories of Programming and Old PCs"
+subtitle: "Stories of Programming and Old PCs"
+description: "Studying classic algorithms and implementing them in C on a 15-year-old laptop is a slow, meditative hobby that keeps the programming muscle sharp in an era of AI agents."
 date: 2026-07-31
 draft: false
 ---

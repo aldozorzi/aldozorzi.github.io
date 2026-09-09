@@ -1,6 +1,7 @@
 ---
 title: "Should we test what a candidate doesn't know?"
-description: "Alternative assessments"
+subtitle: "Alternative assessments"
+description: "In 2026, coding interviews still ban AI and reward rote knowledge. Real skill is reasoning and learning new domains, not recalling algorithms by heart. Here's how to assess candidates properly."
 date: 2026-09-09
 draft: false
 ---
