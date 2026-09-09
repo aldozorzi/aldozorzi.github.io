@@ -18,7 +18,7 @@ I turn on a laptop that is over 15 years old, on which I installed a minimal ver
 
 # Training the Mind and getting satisfaction
 
-The ultimate goal is to keep the "programming muscle" working, even in an era of AI agents and automated programming. Because while it is true that LLMs program by themselves, it is also true that if you do not know how to guide them, you lose control and cannot know whether you can trust what they do. Therefore, personal knowledge is indispensable, and it must be nurtured. Furthermore, the dopamine release triggered by hand-written code is not comparable to that triggered by code written by an LLM.
+The ultimate goal is to keep the "programming muscle" working, even in an era of AI agents and automated programming. Not because it's strictly necessary, but because it's a rewarding and satisfying thing to do. In fact, the dopamine release triggered by hand-written code is not comparable to that triggered by code written by an LLM.
 
 # Crafting the Ideal Leisure Setup
 
