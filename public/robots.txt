@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ldazrz.com/sitemap-index.xml
